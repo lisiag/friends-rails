@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, :path_prefix => 'my'
+  resources :users
+
   resources :friends
   # get 'home/index'
   get 'home/about'
