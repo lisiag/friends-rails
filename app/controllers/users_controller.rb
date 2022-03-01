@@ -16,8 +16,19 @@ class UsersController < ApplicationController
     end
   end
 
+  # DELETE /users/1 or /users/1.json
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+
+    respond_to do |format|
+      format.html { redirect_to friends_url, notice: "User was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
   private
   def user_params
-    params.require(:user).permit(:admin)
+    params.require(:user).permit(:email, :admin)
   end
 end
