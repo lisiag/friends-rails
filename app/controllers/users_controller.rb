@@ -8,9 +8,8 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    # if user is updated successfully then redirect
-    # if (@user.update(user_params))
-    if(@user.update_attribute(:admin, true))
+    if(@user.update(user_params))
+      flash[:notice] = "User's status updated."
       redirect_to friends_path
     else
       render 'edit'
@@ -18,8 +17,7 @@ class UsersController < ApplicationController
   end
 
   private
-  # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.permit(:admin)
+    params.require(:user).permit(:admin)
   end
 end
