@@ -3,7 +3,7 @@
 
     <%= form_for(@user) do |f| %>
 
-        <%= check_box(:tag, tag.id, {checked: @user.admin}) %>
+        <%= f.check_box(:admin, {checked: @user.admin}) %>
         <%= label_tag(:admin, "Admin") %>
 
         <div class="actions">

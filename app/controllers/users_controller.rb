@@ -6,10 +6,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-
   def update
     @user = User.find(params[:id])
-    if @user.update(user_params)
+    # if user is updated successfully then redirect
+    # if (@user.update(user_params))
+    if(@user.update_attribute(:admin, true))
       redirect_to friends_path
     else
       render 'edit'
