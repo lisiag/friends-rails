@@ -10,7 +10,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if(@user.update(user_params))
       flash[:notice] = "User's status updated."
-      redirect_to friends_path
+      if (is_admin?)
+        redirect_to users_path
+      else
+        redirect_to root_path
+      end
     else
       render 'edit'
     end
