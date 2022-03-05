@@ -1,28 +1,38 @@
-FROM ruby:2.7.1
+# https://github.com/iamovrhere/friend-list-on-rails/
+# From: https://docs.docker.com/samples/rails/
+FROM ruby:2.7.1 AS base
 
-RUN apt-get update -qq && apt-get install -qqy build-essential nodejs
-CMD npm install --global yarn
+ARG TARGET_APP='app'
+ARG TARGET_DIR='.'
 
-RUN mkdir /app
-WORKDIR /app
+RUN curl -sL https://deb.nodesource.com/setup_14.x > /tmp/setup_node.sh && \
+  # Validate node repo setup script.
+  sha256sum /tmp/setup_node.sh | grep 597d9b16bca9b8061f23b34933b522267d18f5dff75de3c09a1fad2709f69f16 && \
+  echo "sha matches!" || echo "sha fails!"
+RUN bash /tmp/setup_node.sh && \
+  apt-get update -qq && \
+  apt-get install -y nodejs postgresql-client && \
+  gem install rails
 
-COPY Gemfile Gemfile.lock yarn.lock /app/
+WORKDIR /$TARGET_APP
+COPY $TARGET_DIR/ /$TARGET_APP/
 
-RUN curl https://deb.nodesource.com/setup_12.x | bash
-RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+# Add a script to be executed to run service.
+#COPY entrypoint.sh /usr/bin/
+#RUN chmod +x /usr/bin/entrypoint.sh
 
-RUN apt-get update && apt-get install -y nodejs yarn postgresql-client
+FROM base as dev
+
+RUN npm install --global yarn
+# When bootstrapping from fresh, this will fail.
+RUN bundle install || true
+
+FROM base AS prod
 
 RUN bundle install
 
-ENV RAILS_ENV production
-ENV RACK_ENV production
-
-COPY . /app
-
-RUN bundle exec rake assets:precompile
-
+#ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
-CMD bundle exec rails server
+# Service that runs on container launch.
+CMD ["rails", "server", "-b", "0.0.0.0"]
