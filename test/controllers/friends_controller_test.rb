@@ -45,4 +45,8 @@ class FriendsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to friends_url
   end
+
+  test "should route to friend" do
+    assert_routing '/friends/1', {controller: "friends", action: "show", id: "1" }
+  end
 end
