@@ -19,8 +19,8 @@ class FriendsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Friend.count') do
       post friends_url, params: { friend: { email: @friend.email, first_name: @friend.first_name, last_name: @friend.last_name, phone: @friend.phone, twitter: @friend.twitter } }
     end
-
     assert_redirected_to friend_url(Friend.last)
+    assert_equal 'Friend was successfully created.', flash[:notice]
   end
 
   test "should show friend" do
