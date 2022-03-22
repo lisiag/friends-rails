@@ -34,8 +34,10 @@ class FriendsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update friend" do
-    patch friend_url(@friend), params: { friend: { email: @friend.email, first_name: @friend.first_name, last_name: @friend.last_name, phone: @friend.phone, twitter: @friend.twitter } }
+    patch friend_url(@friend), params: { friend: { email: @friend.email, first_name: "New name", last_name: @friend.last_name, phone: @friend.phone, twitter: @friend.twitter } }
     assert_redirected_to friend_url(@friend)
+    @friend.reload
+    assert_equal "New name", @friend.first_name
   end
 
   test "should destroy friend" do
