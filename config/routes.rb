@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  # devise_for :users, :path_prefix => 'my'
+  devise_for :users, :path_prefix => 'my', :controllers => { registrations: 'users/registrations' }
 
   # resources :users do
   #   member do
