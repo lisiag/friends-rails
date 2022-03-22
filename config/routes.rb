@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
-  devise_for :users, :path_prefix => 'my'
+  # devise_for :users, :path_prefix => 'my'
 
-  resources :users do
-    member do
-      put :update
-    end
-  end
+  # resources :users do
+  #   member do
+  #     put :update
+  #   end
+  # end
 
   resources :friends
   # get 'home/index'
