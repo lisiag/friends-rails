@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users, :path_prefix => 'my', :controllers => { registrations: 'users/registrations' }
+  devise_scope :user do
+    get "users" => "users/registrations#listUsers"
+  end
 
   # resources :users do
   #   member do
