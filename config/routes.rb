@@ -2,13 +2,9 @@ Rails.application.routes.draw do
   devise_for :users, :path_prefix => 'my', :controllers => { registrations: 'users/registrations' }
   devise_scope :user do
     get "users" => "users/registrations#listUsers"
+    get "/users/:id/edit", to: "users/registrations#edit_other", as: 'edit_user'
+    put "/users/:id", to: "users/registrations#update_other", as: 'user'
   end
-
-  # resources :users do
-  #   member do
-  #     put :update
-  #   end
-  # end
 
   resources :friends
   # get 'home/index'

@@ -6,6 +6,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource
   def listUsers
+    @users = User.all
   end
 
   # GET /resource/sign_up
@@ -23,10 +24,34 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
+  # GET
+  def edit_other
+    @user = User.find(params[:id])
+  end
+
   # PUT /resource
   # def update
   #   super
   # end
+
+  # PUT /resource
+  def update_other
+    @user = User.find(params[:id])
+    # if params[:user][:password].blank?
+    #   params[:user].delete(:password)
+    #   params[:user].delete(:password_confirmation)
+    # end
+    if(@user.update(user_params))
+      flash[:notice] = "User's status updated."
+      if (is_admin?)
+        redirect_to users_path
+      else
+        redirect_to root_path
+      end
+    else
+      render 'edit_other'
+    end
+  end
 
   # DELETE /resource
   # def destroy
@@ -42,11 +67,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
+
+  def user_params
+    params.require(:user).permit(:admin)
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
-  #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
+  #   devise_parameter_sanitizer.permit(:sign_up)
   # end
 
   # If you have extra params to permit, append them to the sanitizer.
