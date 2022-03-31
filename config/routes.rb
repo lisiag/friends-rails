@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     get "users" => "users/registrations#listUsers"
     get "/users/:id/edit", to: "users/registrations#edit_other", as: 'edit_user'
     put "/users/:id", to: "users/registrations#update_other", as: 'user'
+    delete "/users/:id", to: "users/registrations#destroy_other", as: 'delete_user'
   end
 
   resources :friends

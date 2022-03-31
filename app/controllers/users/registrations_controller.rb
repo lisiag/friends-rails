@@ -58,6 +58,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
+  # DELETE
+  def destroy_other
+    @user = User.find(params[:id])
+    @user.destroy
+    respond_to do |format|
+      format.html { redirect_to users_path, notice: "User was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
   # in to be expired now. This is useful if the user wants to
